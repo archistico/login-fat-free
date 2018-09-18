@@ -2,9 +2,7 @@
 namespace App;
 class Auth {
     function Login($f3, $args) {
-        $f3->set('titolo','Login');
-        $f3->set('contenuto','login.htm');
-        echo \Template::instance()->render('templates/base.htm');
+        echo \Template::instance()->render('templates/login.htm');
     }
 
     function Logout($f3, $args) {
