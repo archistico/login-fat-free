@@ -6,7 +6,7 @@ $f3->set('DEBUG',3);
 $f3->route('GET @home: /', '\App\App->Homepage');
 $f3->route('GET @login: /login', '\App\Auth->Login');
 $f3->route('GET @logout: /logout', '\App\Auth->Logout');
-$f3->route('GET @verify: /verify', '\App\App->Verify');
+$f3->route('GET @verifica: /verifica', '\App\App->Verifica');
 
 /*
 $f3->route('GET @home: /',
