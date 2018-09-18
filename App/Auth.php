@@ -12,4 +12,10 @@ class Auth {
         $f3->set('contenuto','logout.htm');
         echo \Template::instance()->render('templates/base.htm');
     }
+
+    function LoginCheck($f3, $args) {
+        $utente = $f3->get('POST.utente');
+        $password = $f3->get('POST.password');
+        echo "Check $utente $password";
+    }
 }
