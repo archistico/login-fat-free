@@ -1,0 +1,28 @@
+<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link <check if=" {{ @titolo=='Home' }} "><true>active</true></check> " href="{{@BASE}}{{ 'home' | alias }}">
+        <span data-feather="home"></span>
+        Home
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <check if=" {{ @titolo=='Login' }} "><true>active</true></check>" href="{{@BASE}}{{ 'login' | alias }}">
+        <span data-feather="file"></span>
+        Login
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <check if=" {{ @titolo=='Interna' }} "><true>active</true></check>" href="{{@BASE}}{{ 'verify' | alias }}">
+        <span data-feather="file"></span>
+        Interna
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <check if=" {{ @titolo=='Logout' }} "><true>active</true></check>" href="{{@BASE}}{{ 'logout' | alias }}">
+        <span data-feather="layers"></span>
+        Logout
+      </a>
+    </li>
+  </ul>
+</div>

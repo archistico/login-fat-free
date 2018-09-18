@@ -1,0 +1,22 @@
+CREATE TABLE categoria1(
+  id INTEGER PRIMARY KEY,
+  descrizione TEXT NOT NULL
+);
+
+CREATE TABLE categoria2(
+  id INTEGER PRIMARY KEY,
+  descrizione TEXT NOT NULL,
+  madre INTEGER REFERENCES categoria1(id) ON UPDATE CASCADE 
+);
+
+CREATE TABLE categoria3(
+  id INTEGER PRIMARY KEY,
+  descrizione TEXT NOT NULL,
+  madre INTEGER REFERENCES categoria2(id) ON UPDATE CASCADE
+);
+
+CREATE TABLE categoria4(
+  id INTEGER PRIMARY KEY,
+  descrizione TEXT NOT NULL,
+  madre INTEGER REFERENCES categoria3(id) ON UPDATE CASCADE
+);
