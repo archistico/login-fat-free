@@ -2,6 +2,13 @@
 namespace App;
 class Auth {
     function Login($f3, $args) {
+        
+        // CSRF
+        $session = new \Session();
+        $csrf = $session->csrf();
+        $f3->set('token', $csrf);
+        $f3->set('SESSION.csrf', $csrf);
+
         echo \Template::instance()->render('templates/login.htm');
     }
 
@@ -12,38 +19,26 @@ class Auth {
     }
 
     function LoginCheck($f3, $args) {
-        $utente = $f3->get('POST.utente');
-        $password = $f3->get('POST.password');
-        echo "Check $utente $password<br>";
-        
-        
-    }
-
-    function LoginToken($f3, $args) {
-
+        // INIZIALIZZA SESSIONE
         $session = new \Session();
-        $csrf = $session->csrf();
-        
-        $f3->set('SESSION.csrf', $csrf);
-        $f3->reroute('/loginTokenVerify?token='.$csrf);
-    }
 
-    function LoginTokenVerify($f3, $args) {
-        new \Session();
+        if ($f3->VERB=='POST') {
 
-        if ($f3->VERB=='GET') {
-
-            $token = $f3->get('GET.token');
+            // CARICA I DATI INVIATI E DI SESSIONE
+            $utente = $f3->get('POST.utente');
+            $password = $f3->get('POST.password');
+            $token = $f3->get('POST.token');
             $csrf = $f3->get('SESSION.csrf');
 
+            // Resetta il csrf per evitare il doppio invio
+            $f3->set('SESSION.csrf', $session->csrf());
+
+            // CONTROLLA SE NON SONO SOTTO ATTACCO CSRF
             if ($token===$csrf) {
-                echo 'CSRF OK!<br>';
-                echo 'token: '.$token.'<br>';
-                echo 'csrf_: '.$csrf.'<br>';
+                echo "Check $utente $password<br>";
             } else {
                 echo 'CSRF attack!<br>';
-                echo 'token: '.$token.'<br>';
-                echo 'csrf_: '.$csrf.'<br>';
+                die();
             }
         }
     }
