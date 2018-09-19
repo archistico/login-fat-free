@@ -22,24 +22,45 @@
 </head>
 
 <body>
-    <form class="form-signin" method="POST" action="{{@BASE}}{{ 'loginCheck' | alias }}">
-        <div class="text-center mb-4">
-            <h1 class="h3 mb-3 font-weight-normal">Login Fat-free</h1>
+    <div class="row">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+            <form class="form-signin" method="POST" action="{{@BASE}}{{ 'loginCheck' | alias }}">
+                <div class="text-center mb-4">
+                    <h1 class="h3 mb-3 font-weight-normal">Login Fat-free</h1>
+                </div>
+
+                <div class="form-label-group">
+                    <label for="inputUtente">Utente</label>
+                    <input type="text" id="inputUtente" class="form-control" placeholder="Utente" name="utente" required autofocus>
+                </div>
+
+                <div class="form-label-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+                </div>
+                <input type="hidden" name="token" value="{{ @token }}">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+            </form>
         </div>
 
-        <div class="form-label-group">
-            <input type="text" id="inputUtente" class="form-control" placeholder="Utente" name="utente" required autofocus>
-            <label for="inputUtente">Utente</label>
-        </div>
+        <div class="col-md-4"></div>
+    </div>
 
-        <div class="form-label-group">
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
-            <label for="inputPassword">Password</label>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <!-- bootstrap style-->
+            <F3:repeat group="{{ \App\Flash::instance()->getMessages() }}" value="{{ @msg }}">
+                <div class="alert alert-{{ @msg.status }} alert-dismissable">
+                    {{ @msg.text | esc }}
+                </div>
+            </F3:repeat>
         </div>
-        <input type="hidden" name="token" value="{{ @token }}">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-    </form>
-    <script src='{{@BASE}}/js/login.js'></script>
+        <div class="col-md-4"></div>
+
+        <script src='{{@BASE}}/js/login.js'></script>
 </body>
 
 </html>

@@ -45,6 +45,7 @@ class Auth {
                 if($login_result) {
                     $f3->reroute('/');
                 } else {
+                    \App\Flash::instance()->addMessage('Nome utente o password non corretta', 'danger');
                     $f3->reroute('/login');
                 }
             } else {
