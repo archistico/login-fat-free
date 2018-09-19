@@ -41,8 +41,8 @@ class Auth {
                 $auth = new \Auth($users, array('id'=>'user_id', 'pw'=>'password'));
                 $login_result = $auth->login($utente, $password); 
 
-                
                 if($login_result) {
+                    $f3->set('COOKIE.user_id', $utente);
                     $f3->reroute('/');
                 } else {
                     \App\Flash::instance()->addMessage('Nome utente o password non corretta', 'danger');
