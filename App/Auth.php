@@ -35,7 +35,18 @@ class Auth {
 
             // CONTROLLA SE NON SONO SOTTO ATTACCO CSRF
             if ($token===$csrf) {
-                echo "Check $utente $password<br>";
+                
+                $db=new \DB\SQL('sqlite:.database.sqlite');
+                $users = new \DB\SQL\Mapper($db, 'users');
+                $auth = new \Auth($users, array('id'=>'user_id', 'pw'=>'password'));
+                $login_result = $auth->login($utente, $password); 
+
+                
+                if($login_result) {
+                    $f3->reroute('/');
+                } else {
+                    $f3->reroute('/login');
+                }
             } else {
                 echo 'CSRF attack!<br>';
                 die();

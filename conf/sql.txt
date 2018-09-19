@@ -1,22 +1,7 @@
-CREATE TABLE categoria1(
-  id INTEGER PRIMARY KEY,
-  descrizione TEXT NOT NULL
+CREATE TABLE `users` (
+	`user_id`	TEXT NOT NULL UNIQUE,
+	`password`	TEXT NOT NULL,
+	PRIMARY KEY(`user_id`)
 );
 
-CREATE TABLE categoria2(
-  id INTEGER PRIMARY KEY,
-  descrizione TEXT NOT NULL,
-  madre INTEGER REFERENCES categoria1(id) ON UPDATE CASCADE 
-);
-
-CREATE TABLE categoria3(
-  id INTEGER PRIMARY KEY,
-  descrizione TEXT NOT NULL,
-  madre INTEGER REFERENCES categoria2(id) ON UPDATE CASCADE
-);
-
-CREATE TABLE categoria4(
-  id INTEGER PRIMARY KEY,
-  descrizione TEXT NOT NULL,
-  madre INTEGER REFERENCES categoria3(id) ON UPDATE CASCADE
-);
+INSERT INTO `users`(`user_id`,`password`) VALUES ('emilie','prova');
