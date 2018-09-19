@@ -25,11 +25,11 @@ class Auth {
         $csrf = $session->csrf();
         
         $f3->set('SESSION.csrf', $csrf);
-        $f3->reroute('/loginTokenVerify/?token='.$csrf);
+        $f3->reroute('/loginTokenVerify?token='.$csrf);
     }
 
     function LoginTokenVerify($f3, $args) {
-        $session = new \Session();
+        new \Session();
 
         if ($f3->VERB=='GET') {
 
