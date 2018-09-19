@@ -2,9 +2,13 @@
 namespace App;
 class Admin {
     function beforeroute($f3) {
-        if(!\App\Auth::Autentica($f3)) {
+        $auth = \App\Auth::Autentica($f3); 
+        if(!$auth) {
             \App\Flash::instance()->addMessage('Prima effettuare il login', 'danger');
             $f3->reroute('/login');
+            $f3->set('logged', false);
+        } else {
+            $f3->set('logged', true);
         }
     }
 

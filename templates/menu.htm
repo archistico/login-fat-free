@@ -6,23 +6,29 @@
         Home
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link <check if=" {{ @titolo=='Login' }} "><true>active</true></check>" href="{{@BASE}}{{ 'login' | alias }}">
-        <span data-feather="file"></span>
-        Login
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link <check if=" {{ @titolo=='Verifica' }} "><true>active</true></check>" href="{{@BASE}}{{ 'verifica' | alias }}">
-        <span data-feather="file"></span>
-        Verifica
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link <check if=" {{ @titolo=='Logout' }} "><true>active</true></check>" href="{{@BASE}}{{ 'logout' | alias }}">
-        <span data-feather="layers"></span>
-        Logout
-      </a>
-    </li>
+    <check if=" {{ @logged }} ">
+      <true>
+        <li class="nav-item">
+          <a class="nav-link <check if=" {{ @titolo=='Verifica' }} "><true>active</true></check>" href="{{@BASE}}{{ 'verifica' | alias }}">
+            <span data-feather="file"></span>
+            Verifica
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <check if=" {{ @titolo=='Logout' }} "><true>active</true></check>" href="{{@BASE}}{{ 'logout' | alias }}">
+            <span data-feather="layers"></span>
+            Logout
+          </a>
+        </li>
+      </true>
+      <false>
+        <li class="nav-item">
+          <a class="nav-link <check if=" {{ @titolo=='Login' }} "><true>active</true></check>" href="{{@BASE}}{{ 'login' | alias }}">
+            <span data-feather="file"></span>
+            Login
+          </a>
+        </li>
+      </false>
+    </check>
   </ul>
 </div>
