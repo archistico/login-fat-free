@@ -13,7 +13,7 @@ class Auth
         $f3->set('SESSION.csrf', $csrf);
 
         // Reset persistenza
-        $f3->set('COOKIE.sessionName', NULL);
+        $f3->set('COOKIE.sessionName', null);
 
         echo \Template::instance()->render('templates/login.htm');
     }
@@ -27,9 +27,9 @@ class Auth
         $sessionUserid = "SESSION." . $csrfArray[0];
         $sessionPassword = "SESSION." . $csrfArray[1];
 
-        $f3->set('COOKIE.sessionName', NULL);
-        $f3->set($sessionUserid, NULL);
-        $f3->set($sessionPassword, NULL);
+        $f3->set('COOKIE.sessionName', null);
+        $f3->set($sessionUserid, null);
+        $f3->set($sessionPassword, null);
 
         \App\Flash::instance()->addMessage('Logout avvenuto', 'success');
         $f3->reroute('/login');
@@ -40,23 +40,25 @@ class Auth
         $session = new \Session();
         $csrf = $f3->get('COOKIE.sessionName');
 
-        $csrfArray = explode(".", $csrf);
-        $sessionUserid = "SESSION." . $csrfArray[0];
-        $sessionPassword = "SESSION." . $csrfArray[1];
+        if (isset($csrf)) {
+            $csrfArray = explode(".", $csrf);
+            $sessionUserid = "SESSION." . $csrfArray[0];
+            $sessionPassword = "SESSION." . $csrfArray[1];
 
-        $utente = trim($f3->get($sessionUserid));
-        $password = trim($f3->get($sessionPassword));
+            $utente = trim($f3->get($sessionUserid));
+            $password = trim($f3->get($sessionPassword));
 
-        if (isset($utente) && isset($password)) {
-            $db = new \DB\SQL('sqlite:.database.sqlite');
-            $users = new \DB\SQL\Mapper($db, 'users');
-            $auth = new \Auth($users, array('id' => 'user_id', 'pw' => 'password'));
-            $login_result = $auth->login($utente, $password);
+            if (isset($utente) && isset($password)) {
+                $db = new \DB\SQL('sqlite:.database.sqlite');
+                $users = new \DB\SQL\Mapper($db, 'users');
+                $auth = new \Auth($users, array('id' => 'user_id', 'pw' => 'password'));
+                $login_result = $auth->login($utente, $password);
 
-            return $login_result;
-        } else {
-            return false;
+                return $login_result;
+            }
         }
+
+        return false;
     }
 
     public function LoginCheck($f3, $args)
