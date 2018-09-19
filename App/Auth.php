@@ -1,28 +1,70 @@
 <?php
 namespace App;
-class Auth {
-    function Login($f3, $args) {
-        
+
+class Auth
+{
+    public function Login($f3, $args)
+    {
+
         // CSRF
         $session = new \Session();
         $csrf = $session->csrf();
         $f3->set('token', $csrf);
         $f3->set('SESSION.csrf', $csrf);
 
+        // Reset persistenza
+        $f3->set('COOKIE.sessionName', NULL);
+
         echo \Template::instance()->render('templates/login.htm');
     }
 
-    function Logout($f3, $args) {
-        $f3->set('titolo','Logout');
-        $f3->set('contenuto','logout.htm');
-        echo \Template::instance()->render('templates/base.htm');
+    public function Logout($f3, $args)
+    {
+        $session = new \Session();
+        $csrf = $f3->get('COOKIE.sessionName');
+
+        $csrfArray = explode(".", $csrf);
+        $sessionUserid = "SESSION." . $csrfArray[0];
+        $sessionPassword = "SESSION." . $csrfArray[1];
+
+        $f3->set('COOKIE.sessionName', NULL);
+        $f3->set($sessionUserid, NULL);
+        $f3->set($sessionPassword, NULL);
+
+        \App\Flash::instance()->addMessage('Logout avvenuto', 'success');
+        $f3->reroute('/login');
     }
 
-    function LoginCheck($f3, $args) {
+    public static function Autentica($f3)
+    {
+        $session = new \Session();
+        $csrf = $f3->get('COOKIE.sessionName');
+
+        $csrfArray = explode(".", $csrf);
+        $sessionUserid = "SESSION." . $csrfArray[0];
+        $sessionPassword = "SESSION." . $csrfArray[1];
+
+        $utente = trim($f3->get($sessionUserid));
+        $password = trim($f3->get($sessionPassword));
+
+        if (isset($utente) && isset($password)) {
+            $db = new \DB\SQL('sqlite:.database.sqlite');
+            $users = new \DB\SQL\Mapper($db, 'users');
+            $auth = new \Auth($users, array('id' => 'user_id', 'pw' => 'password'));
+            $login_result = $auth->login($utente, $password);
+
+            return $login_result;
+        } else {
+            return false;
+        }
+    }
+
+    public function LoginCheck($f3, $args)
+    {
         // INIZIALIZZA SESSIONE
         $session = new \Session();
 
-        if ($f3->VERB=='POST') {
+        if ($f3->VERB == 'POST') {
 
             // CARICA I DATI INVIATI E DI SESSIONE
             $utente = $f3->get('POST.utente');
@@ -34,15 +76,24 @@ class Auth {
             $f3->set('SESSION.csrf', $session->csrf());
 
             // CONTROLLA SE NON SONO SOTTO ATTACCO CSRF
-            if ($token===$csrf) {
-                
-                $db=new \DB\SQL('sqlite:.database.sqlite');
-                $users = new \DB\SQL\Mapper($db, 'users');
-                $auth = new \Auth($users, array('id'=>'user_id', 'pw'=>'password'));
-                $login_result = $auth->login($utente, $password); 
+            if ($token === $csrf) {
 
-                if($login_result) {
-                    $f3->set('COOKIE.user_id', $utente);
+                $db = new \DB\SQL('sqlite:.database.sqlite');
+                $users = new \DB\SQL\Mapper($db, 'users');
+                $auth = new \Auth($users, array('id' => 'user_id', 'pw' => 'password'));
+                $login_result = $auth->login($utente, $password);
+
+                if ($login_result) {
+
+                    $f3->set('COOKIE.sessionName', $csrf);
+
+                    $csrfArray = explode(".", $csrf);
+                    $sessionUserid = "SESSION." . $csrfArray[0];
+                    $sessionPassword = "SESSION." . $csrfArray[1];
+
+                    $f3->set($sessionUserid, $utente);
+                    $f3->set($sessionPassword, $password);
+
                     $f3->reroute('/');
                 } else {
                     \App\Flash::instance()->addMessage('Nome utente o password non corretta', 'danger');
