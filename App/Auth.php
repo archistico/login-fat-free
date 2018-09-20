@@ -36,9 +36,14 @@ class Auth
 
         $password_hash = hash('sha512', $password_chiaro);
         
-        $password_hash_bc = password_hash($password_hash, PASSWORD_DEFAULT);
+        $password_hash_bc = password_hash($password_hash, PASSWORD_DEFAULT, ['cost' => 15]);
         $password_hash_db = '$2y$10$CRQmzlpPSOQMt3NaeQHZvOGM1pkSL9CcLGsd2U625JLTz36ZwBs4a';
         
+        var_dump($password_chiaro);
+        var_dump($password_hash);
+        var_dump($password_hash_bc);
+        var_dump($password_hash_db);
+
         //$verify = hash('sha512', $password_chiaro);
         
         $verify = password_verify($password_hash, $password_hash_bc);
