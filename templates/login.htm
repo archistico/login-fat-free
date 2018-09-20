@@ -26,22 +26,19 @@
         <div class="col-md-4"></div>
 
         <div class="col-md-4">
-            <form class="form-signin" method="POST" action="{{@BASE}}{{ 'loginCheck' | alias }}">
-                <div class="text-center mb-4">
-                    <h1 class="h3 mb-3 font-weight-normal">Login Fat-free</h1>
+            <h1>LOGIN</h1>
+            <form method="POST" action="{{@BASE}}{{ 'loginCheck' | alias }}" name="login_form">
+                <div class="form-group">
+                    <label for="utente">Nome utente</label>
+                    <input type="text" class="form-control" id="utente" placeholder="Nome Utente" name="utente">
                 </div>
-
-                <div class="form-label-group">
-                    <label for="inputUtente">Utente</label>
-                    <input type="text" id="inputUtente" class="form-control" placeholder="Utente" name="utente" required autofocus>
-                </div>
-
-                <div class="form-label-group">
-                    <label for="inputPassword">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+                <div class="form-group">
+                    <label for="p">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" name="p" id="password" onkeydown="if (event.keyCode == 13) { formhash(this.form, this.form.password); this.form.submit(); return false; }">
                 </div>
                 <input type="hidden" name="token" value="{{ @token }}">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                <input type="hidden" name="password">
+                <input type="button" class="btn btn-primary btn-block btn-lg" value="Login" onclick="formhash(this.form, this.form.password);" />
             </form>
         </div>
 
@@ -60,7 +57,22 @@
         </div>
         <div class="col-md-4"></div>
 
-        <script src='{{@BASE}}/js/login.js'></script>
+        <script src="{{@BASE}}/js/sha512.js"></script>
+        <script>
+            function formhash(form, password) {
+                // Crea un elemento di input che verrà usato come campo di output per la password criptata.
+                var p = document.createElement("input");
+                // Aggiungi un nuovo elemento al tuo form.
+                form.appendChild(p);
+                p.name = "p";
+                p.type = "hidden"
+                p.value = hex_sha512(password.value);
+                // Assicurati che la password non venga inviata in chiaro.
+                password.value = "";
+                // Come ultimo passaggio, esegui il 'submit' del form.
+                form.submit();
+            }
+        </script>
 </body>
 
 </html>

@@ -17,7 +17,6 @@ class Auth
             // CARICA I DATI INVIATI E DI SESSIONE
             $utente = $f3->get('POST.utente');
             $password_hash = $f3->get('POST.p');
-            $password_hash = password_hash($password_hash, PASSWORD_DEFAULT);
             
             $db=new \DB\SQL('sqlite:.database.sqlite');
             $db->begin();
@@ -29,28 +28,10 @@ class Auth
         }
     }
 
-    public function Test()
+    public function Test($f3)
     {
         // original password
-        $password_chiaro = 'admin';
-
-        $password_hash = hash('sha512', $password_chiaro);
-        
-        $password_hash_bc = password_hash($password_hash, PASSWORD_DEFAULT, ['cost' => 15]);
-        $password_hash_db = '$2y$10$CRQmzlpPSOQMt3NaeQHZvOGM1pkSL9CcLGsd2U625JLTz36ZwBs4a';
-        
-        var_dump($password_chiaro);
-        var_dump($password_hash);
-        var_dump($password_hash_bc);
-        var_dump($password_hash_db);
-
-        //$verify = hash('sha512', $password_chiaro);
-        
-        $verify = password_verify($password_hash, $password_hash_bc);
-        var_dump($verify);
-
-        $verify = password_verify($password_hash, $password_hash_db);
-        var_dump($verify);
+        //$password_hash = hash('sha512', $password_chiaro);
     }
 
     public function Login($f3, $args)
@@ -120,7 +101,7 @@ class Auth
 
             // CARICA I DATI INVIATI E DI SESSIONE
             $utente = $f3->get('POST.utente');
-            $password = $f3->get('POST.password');
+            $password = $f3->get('POST.p');
             $token = $f3->get('POST.token');
             $csrf = $f3->get('SESSION.csrf');
 
