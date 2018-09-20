@@ -5,8 +5,6 @@ class Auth
 {
     public function UtenteNuovo($f3, $args)
     {
-
-        
         $f3->set('titolo','Utente');
         $f3->set('contenuto','utentenuovo.htm');
         echo \Template::instance()->render('templates/base.htm');
@@ -18,23 +16,35 @@ class Auth
 
             // CARICA I DATI INVIATI E DI SESSIONE
             $utente = $f3->get('POST.utente');
-            $password = $f3->get('POST.p');
-            $password = password_hash($password, PASSWORD_DEFAULT);
+            $password_hash = $f3->get('POST.p');
+            $password_hash = password_hash($password_hash, PASSWORD_DEFAULT);
             
+            $db=new \DB\SQL('sqlite:.database.sqlite');
+            $db->begin();
+            $sql = "INSERT INTO users VALUES('$utente', '$password_hash')";
+            $db->exec($sql);
+            $db->commit();
+
+            $f3->reroute('/');
         }
     }
 
     public function Test()
     {
         // original password
-        $password_chiaro = 'bluebeans123';
+        $password_chiaro = 'admin';
 
         $password_hash = hash('sha512', $password_chiaro);
-        $password_hash = password_hash($password_hash, PASSWORD_DEFAULT);
+        
+        $password_hash_bc = password_hash($password_hash, PASSWORD_DEFAULT);
+        $password_hash_db = '$2y$10$CRQmzlpPSOQMt3NaeQHZvOGM1pkSL9CcLGsd2U625JLTz36ZwBs4a';
+        
+        //$verify = hash('sha512', $password_chiaro);
+        
+        $verify = password_verify($password_hash, $password_hash_bc);
+        var_dump($verify);
 
-        $verify = hash('sha512', $password_chiaro);
-        $verify = password_verify($verify, $password_hash);
-
+        $verify = password_verify($password_hash, $password_hash_db);
         var_dump($verify);
     }
 
