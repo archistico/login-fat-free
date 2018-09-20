@@ -3,6 +3,41 @@ namespace App;
 
 class Auth
 {
+    public function UtenteNuovo($f3, $args)
+    {
+
+        
+        $f3->set('titolo','Utente');
+        $f3->set('contenuto','utentenuovo.htm');
+        echo \Template::instance()->render('templates/base.htm');
+    }
+
+    public function UtenteRegistra($f3, $args)
+    {
+        if ($f3->VERB == 'POST') {
+
+            // CARICA I DATI INVIATI E DI SESSIONE
+            $utente = $f3->get('POST.utente');
+            $password = $f3->get('POST.p');
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            
+        }
+    }
+
+    public function Test()
+    {
+        // original password
+        $password_chiaro = 'bluebeans123';
+
+        $password_hash = hash('sha512', $password_chiaro);
+        $password_hash = password_hash($password_hash, PASSWORD_DEFAULT);
+
+        $verify = hash('sha512', $password_chiaro);
+        $verify = password_verify($verify, $password_hash);
+
+        var_dump($verify);
+    }
+
     public function Login($f3, $args)
     {
 
