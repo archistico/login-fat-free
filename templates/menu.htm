@@ -9,6 +9,12 @@
     <check if=" {{ @logged }} ">
       <true>
         <li class="nav-item">
+          <a class="nav-link <check if=" {{ @titolo=='Utente' }} "><true>active</true></check>" href="{{@BASE}}{{ 'utente' | alias }}">
+            <span data-feather="file"></span>
+            Utente
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link <check if=" {{ @titolo=='Verifica' }} "><true>active</true></check>" href="{{@BASE}}{{ 'verifica' | alias }}">
             <span data-feather="file"></span>
             Verifica

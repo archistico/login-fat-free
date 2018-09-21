@@ -3,31 +3,6 @@ namespace App;
 
 class Auth
 {
-    public function UtenteNuovo($f3, $args)
-    {
-        $f3->set('titolo','Utente');
-        $f3->set('contenuto','utentenuovo.htm');
-        echo \Template::instance()->render('templates/base.htm');
-    }
-
-    public function UtenteRegistra($f3, $args)
-    {
-        if ($f3->VERB == 'POST') {
-
-            // CARICA I DATI INVIATI E DI SESSIONE
-            $utente = $f3->get('POST.utente');
-            $password_hash = $f3->get('POST.p');
-            
-            $db=new \DB\SQL('sqlite:.database.sqlite');
-            $db->begin();
-            $sql = "INSERT INTO users VALUES('$utente', '$password_hash')";
-            $db->exec($sql);
-            $db->commit();
-
-            $f3->reroute('/');
-        }
-    }
-
     public function Test($f3)
     {
         // original password
