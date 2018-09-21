@@ -11,6 +11,7 @@ $f3->route('GET @logout: /logout', '\App\Auth->Logout');
 $f3->route('GET @autentica: /autentica', '\App\Auth->Autentica');
 $f3->route('GET @utente: /utente', '\App\Admin->UtenteLista');
 $f3->route('GET @utentenuovo: /utente/nuovo', '\App\Admin->UtenteNuovo');
+$f3->route('GET @utentecancella: /utente/cancella/@user_id', '\App\Admin->UtenteCancella');
 $f3->route('POST @utenteregistra: /utente/registra', '\App\Admin->UtenteRegistra');
 
 $f3->route('GET @verifica: /verifica', '\App\Admin->Verifica');
