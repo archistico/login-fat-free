@@ -70,9 +70,10 @@ class Admin
         $db = new \DB\SQL('sqlite:.database.sqlite');
         $db->begin();
         $sql = "DELETE FROM users WHERE users.user_id = '$utente'";
-        
         $db->exec($sql);
         $db->commit();
+
+        \App\Flash::instance()->addMessage('Utente rimosso', 'success');
 
         $f3->reroute('/utente');
     }
